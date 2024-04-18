@@ -6,7 +6,7 @@ class HomeController extends GetxController {
   late var timeElapsed = stopwatch.elapsed.toString().obs;
   var buttonText = 'Start'.obs;
 
-  String updateButton() =>
+  void updateButton() =>
       buttonText.value = stopwatch.isRunning ? 'Stop' : 'Start';
 
   void updateTimer() {
