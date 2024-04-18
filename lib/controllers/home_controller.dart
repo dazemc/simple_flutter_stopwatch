@@ -2,6 +2,7 @@ import 'package:get/state_manager.dart';
 import 'dart:async';
 
 class HomeController extends GetxController {
+  bool stopTimer = true;
   final stopwatch = Stopwatch();
   late var timeElapsed = stopwatch.elapsed.toString().obs;
   var buttonText = 'Start'.obs;
@@ -9,15 +10,15 @@ class HomeController extends GetxController {
   void updateButton() =>
       buttonText.value = stopwatch.isRunning ? 'Stop' : 'Start';
 
-  void updateTimer() {
-    timeElapsed.value = stopwatch.elapsed.toString();
-  }
+  void updateTimer() => timeElapsed.value = stopwatch.elapsed.toString();
 
   void toggleTimer() {
     if (stopwatch.isRunning) {
+      stopTimer = true;
       stopwatch.stop();
       updateButton();
     } else {
+      startTimer();
       stopwatch.start();
       updateButton();
     }
@@ -29,13 +30,14 @@ class HomeController extends GetxController {
     updateTimer();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
+  void startTimer() {
+    stopTimer = false;
     Timer timer =
         Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
-      if (stopwatch.isRunning) {
-        updateTimer();
+      print('timer is running');
+      updateTimer();
+      if (stopTimer) {
+        timer.cancel();
       }
     });
   }
